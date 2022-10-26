@@ -1,0 +1,224 @@
+{
+  "Uuid": "5d7febfa-d3c2-4774-bfeb-48a8ba9cd5c1",
+  "IsCustomNode": true,
+  "Category": "JNO",
+  "Description": "",
+  "Name": "VisualizePoints",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.Sphere.ByCenterPointRadius@Autodesk.DesignScript.Geometry.Point,double",
+      "Id": "6bb17449044144a89e6611135823c174",
+      "Inputs": [
+        {
+          "Id": "b8c924a32cbc46f88f4b56faa6c87c58",
+          "Name": "centerPoint",
+          "Description": "Point\nDefault value : Autodesk.DesignScript.Geometry.Point.ByCoordinates(0, 0, 0)",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "12c947b5430341019217aed60f7bf7e2",
+          "Name": "radius",
+          "Description": "double\nDefault value : 1",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d8127d926eac44e5825c5890fbe07435",
+          "Name": "Sphere",
+          "Description": "Sphere",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Create a Solid Sphere cetered at the input Point, with given radius.\n\nSphere.ByCenterPointRadius (centerPoint: Point = Autodesk.DesignScript.Geometry.Point.ByCoordinates(0, 0, 0), radius: double = 1): Sphere"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Sphere",
+      "Id": "d3d8146ceb60461f83e6d8bdf3a8505f",
+      "Inputs": [
+        {
+          "Id": "910500445ee142f396d4e7028c5848b8",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "point",
+        "TypeName": "Autodesk.DesignScript.Geometry.Point",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "9617b1a40b684d408f50a8361ebfa73b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f881981b5dda4ae3beae2e7cff965e2e",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "radius",
+        "TypeName": "int",
+        "TypeRank": 0,
+        "DefaultValue": "1200",
+        "Description": ""
+      },
+      "Id": "1b91d7ba97db4135b94762e13c9e81d0",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d9262666eef742b9bd349bdefd5e4116",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "d8127d926eac44e5825c5890fbe07435",
+      "End": "910500445ee142f396d4e7028c5848b8",
+      "Id": "63eaf1bf7fc84c318bdbd6910cffbfae"
+    },
+    {
+      "Start": "f881981b5dda4ae3beae2e7cff965e2e",
+      "End": "b8c924a32cbc46f88f4b56faa6c87c58",
+      "Id": "63cf049e37594b709896543240ebf0b3"
+    },
+    {
+      "Start": "d9262666eef742b9bd349bdefd5e4116",
+      "End": "12c947b5430341019217aed60f7bf7e2",
+      "Id": "329b58fa72d6401680d6aef4fe7e73f9"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -2859.4964467050941,
+      "EyeY": 24664.845973979351,
+      "EyeZ": 29193.48466643933,
+      "LookX": 15059.496446705094,
+      "LookY": -24664.845973979351,
+      "LookZ": -32018.48466643933,
+      "UpX": 0.16287457942962646,
+      "UpY": 0.92387974262237549,
+      "UpZ": -0.34629198908805847
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Sphere.ByCenterPointRadius",
+        "Id": "6bb17449044144a89e6611135823c174",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 481.62898695756837,
+        "Y": 36.017784549750672
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "d3d8146ceb60461f83e6d8bdf3a8505f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 825.9616003484972,
+        "Y": 31.101511879049667
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Point",
+        "Id": "9617b1a40b684d408f50a8361ebfa73b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 125.72570194384448,
+        "Y": 27.784017278617682
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Radius",
+        "Id": "1b91d7ba97db4135b94762e13c9e81d0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 126.10799136069116,
+        "Y": 112.57883369330455
+      }
+    ],
+    "Annotations": [],
+    "X": 1.472500000000025,
+    "Y": 205.84,
+    "Zoom": 1.1575
+  }
+}

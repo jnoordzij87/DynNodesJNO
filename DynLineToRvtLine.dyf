@@ -1,0 +1,284 @@
+{
+  "Uuid": "d34321bd-6d43-4ad8-8c76-8c52bba69ae7",
+  "IsCustomNode": true,
+  "Category": "JNO",
+  "Description": "",
+  "Name": "DynLineToRvtLine",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Line": {
+        "Key": "Autodesk.DesignScript.Geometry.Line",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n#Preparing input from dynamo to revit\r\nstartPoint = IN[0]\r\nendPoint = IN[1]\r\nline = Line.CreateUnbound(startPoint.ToXyz(), endPoint.ToXyz())\r\n\r\nOUT = line\r\n",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "fc9c2deadf7246c29b0859c6cb2e7949",
+      "Inputs": [
+        {
+          "Id": "70be6c9a63964b5c82fe6e6c426e30eb",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0029a8514a0040d4862ac98ffef0b755",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3f0e8dc4241b4cffab377f35406f0dbc",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.Curve.EndPoint",
+      "Id": "6b060e5ef11c4436a87535e1448edac8",
+      "Inputs": [
+        {
+          "Id": "32364da0dff546ac8c474a2886effd54",
+          "Name": "curve",
+          "Description": "Autodesk.DesignScript.Geometry.Curve",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6f1ad78c084541b9951af5aae3677740",
+          "Name": "Point",
+          "Description": "Point",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the end Point along the Curve\n\nCurve.EndPoint: Point"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.Curve.StartPoint",
+      "Id": "ecc9abed6b8c4c49a9570bc414691526",
+      "Inputs": [
+        {
+          "Id": "85c13870e2fa452ba701df52c97af529",
+          "Name": "curve",
+          "Description": "Autodesk.DesignScript.Geometry.Curve",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b4852d3f677f466abcb03d71ffc8f228",
+          "Name": "Point",
+          "Description": "Point",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the start Point along the Curve\n\nCurve.StartPoint: Point"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "line",
+        "TypeName": "Autodesk.DesignScript.Geometry.Line",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "ecea25b9ecca4a2b8b7151e0eff0f001",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "74c06c41bed64e08a6d6c103084557c0",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "OUT",
+      "Id": "85c0649bc98440a98f5d184fe736fc67",
+      "Inputs": [
+        {
+          "Id": "cafe1e6084404a6782db6ed2750591c6",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "3f0e8dc4241b4cffab377f35406f0dbc",
+      "End": "cafe1e6084404a6782db6ed2750591c6",
+      "Id": "b6ddabe3ebdc4babbc04216f52756eb8"
+    },
+    {
+      "Start": "6f1ad78c084541b9951af5aae3677740",
+      "End": "0029a8514a0040d4862ac98ffef0b755",
+      "Id": "a45472f12d0f483c81d00539da8162c4"
+    },
+    {
+      "Start": "b4852d3f677f466abcb03d71ffc8f228",
+      "End": "70be6c9a63964b5c82fe6e6c426e30eb",
+      "Id": "261ea110641041aca90d0c3b315d007f"
+    },
+    {
+      "Start": "74c06c41bed64e08a6d6c103084557c0",
+      "End": "85c13870e2fa452ba701df52c97af529",
+      "Id": "99828145493e421da0e5a91bf49c3fa5"
+    },
+    {
+      "Start": "74c06c41bed64e08a6d6c103084557c0",
+      "End": "32364da0dff546ac8c474a2886effd54",
+      "Id": "be7fb1f688a74a6fa25a4672d5b2f932"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -2859.4964467050941,
+      "EyeY": 24664.845973979351,
+      "EyeZ": 29193.48466643933,
+      "LookX": 15059.496446705094,
+      "LookY": -24664.845973979351,
+      "LookZ": -32018.48466643933,
+      "UpX": 0.16287457942962646,
+      "UpY": 0.92387974262237549,
+      "UpZ": -0.34629198908805847
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "fc9c2deadf7246c29b0859c6cb2e7949",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 783.554526970697,
+        "Y": 0.76749789688210512
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Curve.EndPoint",
+        "Id": "6b060e5ef11c4436a87535e1448edac8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 560.04934179486008,
+        "Y": 92.902469419070258
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Curve.StartPoint",
+        "Id": "ecc9abed6b8c4c49a9570bc414691526",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 561.90296204251126,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "ecea25b9ecca4a2b8b7151e0eff0f001",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "85c0649bc98440a98f5d184fe736fc67",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 982.554526970697,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 10.165572299735004,
+    "Y": 245.92134906612532,
+    "Zoom": 1.2484436539722301
+  }
+}

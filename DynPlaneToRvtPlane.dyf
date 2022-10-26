@@ -1,0 +1,276 @@
+{
+  "Uuid": "67430461-a5cf-411d-9b7f-dde3f368f6ac",
+  "IsCustomNode": true,
+  "Category": "JNO",
+  "Description": "",
+  "Name": "DynPlaneToRvtPlane",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Plane": {
+        "Key": "Autodesk.DesignScript.Geometry.Plane",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\norigin = IN[0]\r\nnormal = IN[1]\r\n\r\nrevitPlane = Plane.CreateByNormalAndOrigin(normal.ToXyz(), origin.ToXyz())\r\n\r\nOUT = revitPlane\r\n",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "ea414962c3f44e5ab72f5a34aed56b94",
+      "Inputs": [
+        {
+          "Id": "b1222a0c6e7b40baa40494f6b849f8d3",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "96e9935b47d3425faa7a5f9e1211ba6a",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "9ae99704da594fcd9893a97de5e5d5d7",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.Plane.Normal",
+      "Id": "150dcc377ea04c289a75025ac5858548",
+      "Inputs": [
+        {
+          "Id": "e1f1121774f24c60ad76dc2d3b24c91b",
+          "Name": "plane",
+          "Description": "Autodesk.DesignScript.Geometry.Plane",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "faf9ac848b68486d92e3b44be98627db",
+          "Name": "Vector",
+          "Description": "Vector",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Returns the normal direction of the Plane.\n\nPlane.Normal: Vector"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.Plane.Origin",
+      "Id": "e130ab6ac7fb4354afe84562bd85cc66",
+      "Inputs": [
+        {
+          "Id": "0e5e83a09dca4fd1a53fc8ef51e2b6a0",
+          "Name": "plane",
+          "Description": "Autodesk.DesignScript.Geometry.Plane",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ccac56f559084e91ba6b82befdca8d41",
+          "Name": "Point",
+          "Description": "Point",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Returns the origin of the Plane.\n\nPlane.Origin: Point"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "OUT",
+      "Id": "388b4f2985c242d280f0973fdf8d723f",
+      "Inputs": [
+        {
+          "Id": "43e0d6fefd9a411db5bb127c844f4e4a",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "dynPlane",
+        "TypeName": "Autodesk.DesignScript.Geometry.Plane",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "0b86f5235d9b416abc3f56543c32b31b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d99c99d9e76b4206bf16b84a43cf5fc4",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "9ae99704da594fcd9893a97de5e5d5d7",
+      "End": "43e0d6fefd9a411db5bb127c844f4e4a",
+      "Id": "109be0ff4be5406cb35f251c82a1a225"
+    },
+    {
+      "Start": "faf9ac848b68486d92e3b44be98627db",
+      "End": "96e9935b47d3425faa7a5f9e1211ba6a",
+      "Id": "3928d758a4a842bb8356374553725ef2"
+    },
+    {
+      "Start": "ccac56f559084e91ba6b82befdca8d41",
+      "End": "b1222a0c6e7b40baa40494f6b849f8d3",
+      "Id": "5f81397eff29420f96be00c2ebc58a82"
+    },
+    {
+      "Start": "d99c99d9e76b4206bf16b84a43cf5fc4",
+      "End": "0e5e83a09dca4fd1a53fc8ef51e2b6a0",
+      "Id": "58c4f386323e4607aa4d659ed30dd4ee"
+    },
+    {
+      "Start": "d99c99d9e76b4206bf16b84a43cf5fc4",
+      "End": "e1f1121774f24c60ad76dc2d3b24c91b",
+      "Id": "aef3b56d89b54e659b1de245bccbd3e1"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 336.83575439453125,
+      "EyeY": 581.154052734375,
+      "EyeZ": 967.5491943359375,
+      "LookX": -341.83575439453125,
+      "LookY": -570.154052734375,
+      "LookZ": -975.5491943359375,
+      "UpX": -0.093920901417732239,
+      "UpY": 0.95881974697113037,
+      "UpZ": -0.2680366039276123
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "ea414962c3f44e5ab72f5a34aed56b94",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 528.22487884178963,
+        "Y": 20.489476648649315
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Plane.Normal",
+        "Id": "150dcc377ea04c289a75025ac5858548",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 96.13714900081402
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Plane.Origin",
+        "Id": "e130ab6ac7fb4354afe84562bd85cc66",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.00000000000023,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "388b4f2985c242d280f0973fdf8d723f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 727.22487884178963,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "0b86f5235d9b416abc3f56543c32b31b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -75.0,
+        "Y": 58.0
+      }
+    ],
+    "Annotations": [],
+    "X": 313.0,
+    "Y": 224.0,
+    "Zoom": 1.0
+  }
+}

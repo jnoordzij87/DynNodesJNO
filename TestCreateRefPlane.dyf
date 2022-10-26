@@ -1,0 +1,280 @@
+{
+  "Uuid": "32da9756-bf2c-485f-a21a-01e1d66405d8",
+  "IsCustomNode": true,
+  "Category": "JNO",
+  "Description": "",
+  "Name": "TestCreateRefPlane",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n#Preparing input from dynamo to revit\r\nelement = UnwrapElement(IN[0])\r\n\r\n#Do some action in a Transaction\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n\r\nbubbleEnd = UnwrapElement(IN[0]).ToXyz()\r\nfreeEnd = UnwrapElement(IN[1]).ToXyz()\r\ncutVec = UnwrapElement(IN[2]).ToXyz()\r\n#forcenormal = IN[3]\r\n\r\ntestplane = Plane.CreateByThreePoints(bubbleEnd, freeEnd, cutVec)\r\ntestnormal = testplane.Normal\r\n\r\nrefPlane = doc.Create.NewReferencePlane(bubbleEnd, freeEnd, cutVec, doc.ActiveView);\r\n\r\nnormal = refPlane.Normal\r\n\r\n#equal = normal.IsAlmostEqualTo(forcenormal.ToXyz())\r\n\r\n#if not equal:\r\n#\trefPlane = doc.Create.NewReferencePlane(bubbleEnd, freeEnd, cutVec * -1, doc.ActiveView);\r\n\r\n#equal = normal.IsAlmostEqualTo(forcenormal.ToXyz())\r\n\r\nTransactionManager.Instance.TransactionTaskDone()\r\n\r\nOUT = refPlane\r\n",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "3c1cea1f0a954e93ae5a474cec2621f1",
+      "Inputs": [
+        {
+          "Id": "8c944d93d09c42729c7bc48e568fea4e",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9586e421703e4496ad674fa32a3967bc",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "39c4d350ebc64abd9b2739fd0e01be78",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "9229e5b54d3049d6aec3333b467c7efa",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "stpt",
+        "TypeName": "Autodesk.DesignScript.Geometry.Point",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "283d0327b30d472083111f9c24c03e14",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "1b3f85c03dbe4264900af4237a48090b",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "endpt",
+        "TypeName": "Autodesk.DesignScript.Geometry.Point",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "cdf2992f934846e9882660f138390ed8",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "4a10ff35428d412c92c8fbb3cc983dde",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "cutVec",
+        "TypeName": "Autodesk.DesignScript.Geometry.Vector",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "ca1f240565d64e089d1d0c9b5f071090",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "81335a555bdf4511a72d988df2a7d6c7",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "refplane",
+      "Id": "d6a820795678474fbfa1ed09247771f2",
+      "Inputs": [
+        {
+          "Id": "9f3bc7cb239046cb94dae7b372a7da71",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "9229e5b54d3049d6aec3333b467c7efa",
+      "End": "9f3bc7cb239046cb94dae7b372a7da71",
+      "Id": "aaeb9e771f0a43cfadddd7f60ec4fd2e"
+    },
+    {
+      "Start": "1b3f85c03dbe4264900af4237a48090b",
+      "End": "8c944d93d09c42729c7bc48e568fea4e",
+      "Id": "15d60edcdd0140fb93218eb2aa101d15"
+    },
+    {
+      "Start": "4a10ff35428d412c92c8fbb3cc983dde",
+      "End": "9586e421703e4496ad674fa32a3967bc",
+      "Id": "f1a17bf831ea49aaa1d86db9a4cab28d"
+    },
+    {
+      "Start": "81335a555bdf4511a72d988df2a7d6c7",
+      "End": "39c4d350ebc64abd9b2739fd0e01be78",
+      "Id": "7bb0b66a924c4c99a8ad02550744905a"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 2186.61328125,
+      "EyeY": 1387.6556396484375,
+      "EyeZ": 2643.8251953125,
+      "LookX": -2159.11767578125,
+      "LookY": -888.5443115234375,
+      "LookZ": -5261.703125,
+      "UpX": 0.023175483569502831,
+      "UpY": 0.99813485145568848,
+      "UpZ": 0.056478753685951233
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "Python Script",
+        "Id": "3c1cea1f0a954e93ae5a474cec2621f1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "283d0327b30d472083111f9c24c03e14",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "cdf2992f934846e9882660f138390ed8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 150.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "ca1f240565d64e089d1d0c9b5f071090",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.74725500544093393,
+        "Y": 281.31862486397625
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "d6a820795678474fbfa1ed09247771f2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 601.60502414676478,
+    "Y": 158.16762751106768,
+    "Zoom": 1.130842140625
+  }
+}

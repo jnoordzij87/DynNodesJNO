@@ -1,0 +1,176 @@
+{
+  "Uuid": "faad8955-c7d7-4e18-9748-9566a978da19",
+  "IsCustomNode": true,
+  "Category": "JNO",
+  "Description": "",
+  "Name": "DynPointToXyz",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB.Structure import *\r\n\r\nclr.AddReference('RevitAPIUI')\r\nfrom Autodesk.Revit.UI import *\r\n\r\nclr.AddReference('System')\r\nfrom System.Collections.Generic import List\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference('RevitServices')\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuidoc=DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument\r\n\r\n#Preparing input from dynamo to revit\r\npt = IN[0]\r\n\r\nOUT = pt.ToXyz()\r\n",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "e3cde2a493d944a6ae350d7f1168c90c",
+      "Inputs": [
+        {
+          "Id": "b517cb0d841644fab19914c0868c47c8",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "93ce7a9f52cd47eca5cf1280331fafa4",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "OUT",
+      "Id": "92d90ec956a94c1097a466e60fedc849",
+      "Inputs": [
+        {
+          "Id": "9bbee32d39034c238ea7b705000abce1",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "dynPoint",
+        "TypeName": "Autodesk.DesignScript.Geometry.Point",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "83d1938b248e493b895ca80580a7537a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "890dae6a2b2c4e159a49330e13d4be5a",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "93ce7a9f52cd47eca5cf1280331fafa4",
+      "End": "9bbee32d39034c238ea7b705000abce1",
+      "Id": "a2d80db8fce948bcb59e36ed60f2b8d1"
+    },
+    {
+      "Start": "890dae6a2b2c4e159a49330e13d4be5a",
+      "End": "b517cb0d841644fab19914c0868c47c8",
+      "Id": "eced5f3f8c0e40e1adabc8158cae94f1"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.0.5650",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -2859.4964467050941,
+      "EyeY": 24664.845973979351,
+      "EyeZ": 29193.48466643933,
+      "LookX": 15059.496446705094,
+      "LookY": -24664.845973979351,
+      "LookZ": -32018.48466643933,
+      "UpX": 0.16287457942962646,
+      "UpY": 0.92387974262237549,
+      "UpZ": -0.34629198908805847
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "e3cde2a493d944a6ae350d7f1168c90c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 230.93742310236223,
+        "Y": 2.8033201320055241
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "92d90ec956a94c1097a466e60fedc849",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "83d1938b248e493b895ca80580a7537a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1.4597136947771787,
+        "Y": 7.0329566873984675
+      }
+    ],
+    "Annotations": [],
+    "X": 306.60354441526596,
+    "Y": 268.4560229366902,
+    "Zoom": 1.7835993623828124
+  }
+}
